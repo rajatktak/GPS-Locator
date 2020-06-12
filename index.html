@@ -19,7 +19,7 @@
         top: 8%;
         margin-left: 1%;
     }
-    body{background:yellow;}
+    body{background:pink;}
 </style>
 
 <body onload="getLocation()">
@@ -76,8 +76,11 @@
                 map.setZoom(9);
                 map.setCenter(marker.getPosition());
             });
-            google.maps.event.addListener(marker, 'dragend', function (evt) { document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' + evt.latLng
-                    .lat().toFixed(8) + ' Current Lng: ' + evt.latLng.lng().toFixed(8) + '</p>';
+            google.maps.event.addListener(marker, 'dragend', function (evt) { 
+                lat = evt.latLng.lat().toFixed(8);
+                lng = evt.latLng.lng().toFixed(8);                 
+                
+                document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' + lat + ' Current Lng: ' + lng + '</p>';
             });
 
             google.maps.event.addListener(marker, 'dragstart', function (evt) {
