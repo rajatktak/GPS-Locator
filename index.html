@@ -19,7 +19,7 @@
         top: 8%;
         margin-left: 1%;
     }
-    body{background:red;}
+    body{background:yellow;}
 </style>
 
 <body onload="getLocation()">
@@ -93,6 +93,8 @@
                 geocoder.geocode({'address': address}, function(results, status) {
                     if (status === 'OK') {
                         mapCanvas.setCenter(results[0].geometry.location);
+                        lat = results[0].geometry.location.lat();
+                        lng = results[0].geometry.location.lng();
                         marker.setPosition(results[0].geometry.location);
                     } else {
                         alert('Geocode was not successful for the following reason: ' + status);
