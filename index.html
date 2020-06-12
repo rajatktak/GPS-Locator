@@ -19,7 +19,7 @@
         top: 8%;
         margin-left: 1%;
     }
-    body{background:black;}
+    body{background:blue;}
 </style>
 
 <body onload="getLocation()">
@@ -99,6 +99,7 @@
                         lat = results[0].geometry.location.lat();
                         lng = results[0].geometry.location.lng();
                         marker.setPosition(results[0].geometry.location);
+                        document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' + lat + ' Current Lng: ' + lng + '</p>';
                          marker.setMap(map);
                     } else {
                         alert('Geocode was not successful for the following reason: ' + status);
