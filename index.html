@@ -19,7 +19,7 @@
         top: 8%;
         margin-left: 1%;
     }
-    body{background:red;}
+    body{background:green;}
 </style>
 
 <body onload="getLocation()">
@@ -35,6 +35,16 @@
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
+                      navigator.permissions && navigator.permissions.query({name: 'geolocation'})
+.then(function(PermissionStatus) {
+    if (PermissionStatus.state == 'granted') {
+          //allowed
+    } else if (PermissionStatus.state == 'prompt') {
+          // prompt - not yet grated or denied
+    } else {
+         //denied
+    }
+})
             } else {
                 alert("Geolocation is not supported by this browser.");
                   document.getElementById('current').innerHTML = " ";
@@ -70,16 +80,7 @@
                 document.getElementById('current').innerHTML = '<p>Currently dragging marker...</p>';
             });
         }
-        navigator.permissions && navigator.permissions.query({name: 'geolocation'})
-.then(function(PermissionStatus) {
-    if (PermissionStatus.state == 'granted') {
-          //allowed
-    } else if (PermissionStatus.state == 'prompt') {
-          // prompt - not yet grated or denied
-    } else {
-         //denied
-    }
-})
+  
         function showError(error) {
   switch(error.code) {
     case error.PERMISSION_DENIED:
