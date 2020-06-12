@@ -19,7 +19,7 @@
         top: 8%;
         margin-left: 1%;
     }
-    body{background:green;}
+    body{background:black;}
 </style>
 
 <body onload="getLocation()">
@@ -38,8 +38,8 @@
                       navigator.permissions && navigator.permissions.query({name: 'geolocation'})
 .then(function(PermissionStatus) {
     if (PermissionStatus.state == 'granted') {
-          //allowed
     } else if (PermissionStatus.state == 'prompt') {
+        alert("location is turned off");
           // prompt - not yet grated or denied
     } else {
          //denied
