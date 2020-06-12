@@ -30,6 +30,10 @@
     <!-- <button>Click Me to show Your Location.</button> -->
 
     <div id="map"></div>
+    <div id="floating-panel">
+        <input id="address" type="textbox" value=" ">
+        <input id="submit" type="button" value="Geocode">
+    </div>
 
     <script>
         function getLocation() {
@@ -80,8 +84,30 @@
             google.maps.event.addListener(marker, 'dragstart', function (evt) {
                 document.getElementById('current').innerHTML = '<p>Currently dragging marker...</p>';
             });
+            var geocoder = new google.maps.Geocoder();
+
+            document.getElementById('submit').addEventListener('click', function() {
+                geocodeAddress(geocoder, map);
+            });
+            function geocodeAddress(geocoder, mapCanvas) {
+                var address = document.getElementById('address').value;
+                geocoder.geocode({'address': address}, function(results, status) {
+                    if (status === 'OK') {
+                        mapCanvas.setCenter(results[0].geometry.location);
+                        marker.setPosition(results[0].geometry.location);
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            }
         }
-  
+
+
+
+
+
+
+
         function showError(error) {
   switch(error.code) {
     case error.PERMISSION_DENIED:
@@ -99,7 +125,7 @@
   }
 }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwAxf1KnJk5RPghWw71lvhSSh24kWxroA&callback=MyMap">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwAxf1KnJk5RPghWw71lvhSSh24kWxroA">
     </script>
 
 </body>
