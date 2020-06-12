@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
+<style>
+    #map {
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        z-index: -1;
+    }
+
+    #current {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 0.5%;
+        z-index: 1;
+        position: absolute;
+        top: 8%;
+        margin-left: 1%;
+    }
+</style>
+
+<body onload="getLocation()">
+
+    <p id="current">GPS Location</p>
+
+
+    <!-- <button>Click Me to show Your Location.</button> -->
+
+    <div id="map"></div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var myCenter = new google.maps.LatLng(lat, lng);
+            var mapCanvas = document.getElementById("map");
+            var mapOptions = {
+                center: myCenter,
+                zoom: 5
+            };
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+            var marker = new google.maps.Marker({
+                position: myCenter,
+                draggable: true
+            });
+            marker.setMap(map);
+            // Zoom to 9 when clicking on marker
+            google.maps.event.addListener(marker, 'click', function () {
+                map.setZoom(9);
+                map.setCenter(marker.getPosition());
+            });
+            google.maps.event.addListener(marker, 'dragend', function (evt) {
+                document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' + evt.latLng
+                    .lat().toFixed(8) + ' Current Lng: ' + evt.latLng.lng().toFixed(8) + '</p>';
+            });
+
+            google.maps.event.addListener(marker, 'dragstart', function (evt) {
+                document.getElementById('current').innerHTML = '<p>Currently dragging marker...</p>';
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwAxf1KnJk5RPghWw71lvhSSh24kWxroA&callback=MyMap">
+    </script>
+
+</body>
+
+</html>
