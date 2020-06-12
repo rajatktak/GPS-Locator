@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
+<style>
+    #map {
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        z-index: -1;
+    }
+
+    #current {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 0.5%;
+        z-index: 1;
+        position: absolute;
+        top: 8%;
+        margin-left: 1%;
+    }
+    body{background:blue;}
+</style>
+
+<body onload="getLocation()">
+
+    <p id="current"></p>
+
+
+    <!-- <button>Click Me to show Your Location.</button> -->
+
+    <div id="map"></div>
+    <div id="floating-panel">
+        <input id="address" type="textbox" value=" ">
+        <input id="submit" type="button" value="Geocode">
+    </div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+                      navigator.permissions && navigator.permissions.query({name: 'geolocation'})
+.then(function(PermissionStatus) {
+    if (PermissionStatus.state == 'granted') {
+    } else if (PermissionStatus.state == 'prompt') {
+                  document.getElementById('current').innerHTML = " ";
+
+        alert("your device location is turned off. Turn it on and refresh for better experience");
+          // prompt - not yet grated or denied
+    } else {
+         //denied
+    }
+})
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var myCenter = new google.maps.LatLng(lat, lng);
+            var mapCanvas = document.getElementById("map");
+            var mapOptions = {
+                center: myCenter,
+                zoom: 5
+            };
+        infowindow = new google.maps.InfoWindow;
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+            var marker = new google.maps.Marker({
+                position: myCenter,
+                draggable: true
+            });
+            marker.setMap(map);
+            // Zoom to 9 when clicking on marker
+            google.maps.event.addListener(marker, 'click', function () {
+                map.setZoom(9);
+                map.setCenter(marker.getPosition());
+            });
+
+
+                google.maps.event.addListener(marker, 'dragend', function (evt) {
+                lat = evt.latLng.lat().toFixed(8);
+                lng = evt.latLng.lng().toFixed(8);
+                geocodeLatLng(geocoder, mapCanvas);
+                document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' + lat + ' Current Lng: ' + lng + '</p>';
+            });
+
+          
+            google.maps.event.addListener(marker, 'dragstart', function (evt) {
+                document.getElementById('current').innerHTML = '<p>Currently dragging marker...</p>';
+
+            });
+            var geocoder = new google.maps.Geocoder();
+
+            document.getElementById('submit').addEventListener('click', function() {
+                geocodeAddress(geocoder, map);
+            });
+            function geocodeAddress(geocoder, mapCanvas) {
+                var address = document.getElementById('address').value;
+                geocoder.geocode({'address': address}, function(results, status) {
+                    if (status === 'OK') {
+                        mapCanvas.setCenter(results[0].geometry.location);
+                        lat = results[0].geometry.location.lat();
+                        lng = results[0].geometry.location.lng();
+                        geocodeLatLng(geocoder, mapCanvas);
+                        marker.setPosition(results[0].geometry.location);
+                        document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' + lat + ' Current Lng: ' + lng + '</p>';
+                         marker.setMap(map);
+                    } else {
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                });
+            }
+
+
+
+            function geocodeLatLng(geocoder, map) {
+
+                var infowindow = new google.maps.InfoWindow;
+                latlng = {lat : parseFloat(lat),lng : parseFloat(lng)};
+                geocoder.geocode({'location': latlng}, function(results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+
+                            // mapCanvas.setZoom(11);
+                            infowindow.setContent(results[0].formatted_address);
+                            infowindow.open(map, marker);
+                        } else {
+                            window.alert('No results found');
+                        }
+                    } else {
+                        window.alert('Geocoder failed due to: ' + status);
+                    }
+                });
+            }
+
+
+
+
+        }
+
+
+
+
+
+
+
+        function showError(error) {
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      x.innerHTML = "User denied the request for Geolocation."
+      break;
+    case error.POSITION_UNAVAILABLE:
+      x.innerHTML = "Location information is unavailable."
+      break;
+    case error.TIMEOUT:
+      x.innerHTML = "The request to get user location timed out."
+      break;
+    case error.UNKNOWN_ERROR:
+      x.innerHTML = "An unknown error occurred."
+      break;
+  }
+}
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwAxf1KnJk5RPghWw71lvhSSh24kWxroA">
+    </script>
+
+</body>
+
+</html>
