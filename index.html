@@ -76,9 +76,8 @@
                 map.setZoom(9);
                 map.setCenter(marker.getPosition());
             });
-            google.maps.event.addListener(marker, 'dragend', function (evt) {
-                document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' +
-                    lat().toFixed(8) + ' Current Lng: ' + lng().toFixed(8) + '</p>';
+            google.maps.event.addListener(marker, 'dragend', function (evt) { document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' + evt.latLng
+                    .lat().toFixed(8) + ' Current Lng: ' + evt.latLng.lng().toFixed(8) + '</p>';
             });
 
             google.maps.event.addListener(marker, 'dragstart', function (evt) {
