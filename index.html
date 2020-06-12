@@ -19,7 +19,7 @@
         top: 8%;
         margin-left: 1%;
     }
-    body{background:black;}
+    body{background:white;}
 </style>
 
 <body onload="getLocation()">
@@ -39,7 +39,9 @@
 .then(function(PermissionStatus) {
     if (PermissionStatus.state == 'granted') {
     } else if (PermissionStatus.state == 'prompt') {
-        alert("location is turned off");
+                  document.getElementById('current').innerHTML = " ";
+
+        alert("your device location is turned off. Turn it on for better experience");
           // prompt - not yet grated or denied
     } else {
          //denied
@@ -47,7 +49,6 @@
 })
             } else {
                 alert("Geolocation is not supported by this browser.");
-                  document.getElementById('current').innerHTML = " ";
             }
         }
 
