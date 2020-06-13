@@ -124,8 +124,8 @@
                         if (results[0]) {
 
                             // mapCanvas.setZoom(11);
-                            InfoWindow.close();
-                            InfoWindow.open();
+                            InfoWindow.close(map);
+                            InfoWindow.open(map);
                             infowindow.setContent(results[0].formatted_address);
                             infowindow.open(map, marker);
                         } else {
