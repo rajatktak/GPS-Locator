@@ -295,9 +295,14 @@
 
             var marker = new google.maps.Marker({
                 position: myCenter,
-                draggable: true
+                draggable: true,
             });
+            var geocoder = new google.maps.Geocoder();
+            document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' + lat +
+                ' Current Lng: ' + lng + '</p>';
+            geocodeLatLng(geocoder, mapCanvas);
             marker.setMap(map);
+
             // Zoom to 9 when clicking on marker
             google.maps.event.addListener(marker, 'click', function () {
                 map.setZoom(9);
@@ -318,7 +323,7 @@
                 document.getElementById('current').innerHTML = '<p>Currently dragging marker...</p>';
 
             });
-            var geocoder = new google.maps.Geocoder();
+            // var geocoder = new google.maps.Geocoder();
 
             document.getElementById('submit').addEventListener('click', function () {
                 geocodeAddress(geocoder, map);
