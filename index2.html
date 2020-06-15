@@ -114,7 +114,8 @@
             var mapCanvas = document.getElementById("map");
             var mapOptions = {
                 center: myCenter,
-                zoom: 15
+                zoom: 15,
+                 disableDefaultUI: true,
             };
             infowindow = new google.maps.InfoWindow;
             var styledMapType = new google.maps.StyledMapType(
