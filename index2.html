@@ -3,9 +3,10 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 
 <style>
-    html{
+    html {
         overflow: hidden;
     }
+
     #map {
         height: 85vh;
         width: 100vw;
@@ -54,9 +55,13 @@
         width: 100vw;
         background: rgb(39, 50, 73, 0.99);
     }
-    #mlogo{bottom:15vh;
-    position:absolute;
-    right:5px;}
+
+    #mlogo {
+        bottom: 15.5vh;
+        position: absolute;
+        left: 75px;
+    }
+
     #floating-panel {
         display: none;
     }
@@ -70,7 +75,10 @@
     <!-- <button>Click Me to show Your Location.</button> -->
 
     <div id="map"></div>
-    <div ><img id="mlogo" src="logow.png" style="width:10%;"></div>
+    <div>
+        <p id="mlogo" style="font-size:1.8em;color:#fff;margin:0;padding:0;"> | </p>
+        <img id="mlogo" src="logow.png" style="width:70px;left:85px;">
+    </div>
     <div id="form">
         <div id="floating-panel">
             <!-- <img src="logo.png" class="img-fluid"> -->
@@ -118,7 +126,7 @@
             var mapOptions = {
                 center: myCenter,
                 zoom: 15,
-                 disableDefaultUI: true,
+                disableDefaultUI: true,
             };
             infowindow = new google.maps.InfoWindow;
             var styledMapType = new google.maps.StyledMapType(
